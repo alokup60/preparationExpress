@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { connectDB } from "./db.js";
+import { connectDB } from "./src/config/db.js";
+import userController from "./src/user/user.controller.js";
 
 const app = express();
 dotenv.config();
@@ -32,19 +33,22 @@ app.get("/", (req, res) => {
   //   res.json({ message: "This is home page" });
 });
 
+//register routes from user.controller.js
+app.use("/api/users", userController);
+
 app.get("/healthy", (req, res) => {
   console.log(req.query);
   res.send("This is healthy page");
 });
 
 //use reqLoggers middleware only for this route
-app.post("/api/users", reqLoggers, (req, res) => {
-  //   console.log(req.body); //return undefrined because we have not used any middleware to parse the body of the request
+// app.post("/api/users", reqLoggers, (req, res) => {
+//   //   console.log(req.body); //return undefrined because we have not used any middleware to parse the body of the request
 
-  throw new Error("This is an error"); // This will be caught by the error handling middleware
+//   throw new Error("This is an error"); // This will be caught by the error handling middleware
 
-  res.json({}); //end the rsponse and send the data to client
-});
+//   res.json({}); //end the rsponse and send the data to client
+// });
 
 //error handling middleware
 app.use((err, req, res, next) => {
