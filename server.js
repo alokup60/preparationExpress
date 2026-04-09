@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
 import dotenv from "dotenv";
 import { connectDB } from "./src/config/db.js";
 import userController from "./src/user/user.controller.js";
@@ -14,10 +15,12 @@ try {
   console.error("Error connecting to MongoDB:", error);
 }
 
-app.use(cors()); // Enable CORS for all routes (third party middleware)
 //Middleware
 //1. Gloabal middleware
+app.use(cors()); // Enable CORS for all routes (third party middleware)
+app.use(helmet()); // Set security-related HTTP headers (third party middleware)
 app.use(express.json()); // Middleware to parse JSON bodies
+app.use(express.static("public")); // Serve static files from the "public" directory
 
 //2.Custom middleware
 const reqLoggers = (req, res, next) => {
