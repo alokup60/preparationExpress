@@ -1,7 +1,17 @@
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
+import { connectDB } from "./db.js";
 
 const app = express();
+dotenv.config();
+
+try {
+  await connectDB();
+  console.log("MongoDB connected sucessfully !");
+} catch (error) {
+  console.error("Error connecting to MongoDB:", error);
+}
 
 app.use(cors()); // Enable CORS for all routes (third party middleware)
 //Middleware
@@ -35,7 +45,6 @@ app.post("/api/users", reqLoggers, (req, res) => {
 
   res.json({}); //end the rsponse and send the data to client
 });
-
 
 //error handling middleware
 app.use((err, req, res, next) => {
